@@ -1,6 +1,6 @@
 {
-  "name": "codeowners2",
-  "displayName": "codeowners2",
+  "name": "codeowner",
+  "displayName": "codeowner",
   "description": "vew file codeowners and much more",
   "version": "0.0.1",
   "icon": "logo.png",
@@ -20,12 +20,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "codeowners.showFilesForOwner",
-        "title": "Codeowners: List all files owned by someone/team"
+        "command": "codeowner.showFilesForOwner",
+        "title": "Codeowner: List all files owned by someone/team"
       },
       {
-        "command": "codeowners.fileOwners",
-        "title": "Codeowners: Show owners of current file"
+        "command": "codeowner.fileOwners",
+        "title": "Codeowner: Show owners of current file"
       }
     ]
   },

@@ -9,7 +9,7 @@ import {
 import Codeowners = require('@nmann/codeowners')
 
 let statusBarItem: StatusBarItem
-const statusBarCommand = 'codeowners.fileOwners'
+const statusBarCommand = 'codeowner.fileOwners'
 
 const getOwners = () => {
 	const editor = window.activeTextEditor
