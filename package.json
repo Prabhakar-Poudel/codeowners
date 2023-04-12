@@ -4,6 +4,10 @@
   "description": "vew file codeowners and much more",
   "version": "0.0.1",
   "icon": "logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Prabhakar-Poudel/codeowners"
+  },
   "engines": {
     "vscode": "^1.77.0"
   },
