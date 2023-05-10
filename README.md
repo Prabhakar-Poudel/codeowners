@@ -8,7 +8,7 @@ Working with CODEOWENERS in VSCode
 ![Open file for owner](/src/assets/gifs/open_file.gif "Open file for owner")
 
 - Open folder owned by owner
-![Open folder owned by owner](/src/assets/gifs/status_bar.gif "Open folder owned by owner")
+![Open folder owned by owner](/src/assets/gifs/open_folder.gif "Open folder owned by owner")
 
 - List files for owner
 Hint: (cmd/ctrl+shift+p and search for the command)
