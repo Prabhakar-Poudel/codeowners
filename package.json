@@ -15,7 +15,9 @@
     "Other"
   ],
   "publisher": "Prabhakar",
-  "activationEvents": ["workspaceContains:**/CODEOWNERS"],
+  "activationEvents": [
+    "workspaceContains:**/CODEOWNERS"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -51,6 +53,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@nmann/codeowners": "^1.0.0"
+    "ignore": "^5.2.4"
   }
 }

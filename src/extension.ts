@@ -4,104 +4,81 @@ import {
 	workspace,
 	ExtensionContext,
 	StatusBarAlignment,
-	commands,
-	Uri
+	commands
 } from 'vscode'
-import Codeowners = require('@nmann/codeowners')
 
+import { Codeowners } from './codeowners'
+import { openFile, ownersToText } from './extensionHelpers'
+
+const codeowners = new Codeowners()
 let statusBarItem: StatusBarItem
 const statusBarCommand = 'codeowner.fileOwners'
-const teamFilesCommand = 'codeowner.showFilesForOwner'
+const ownedFilesCommand = 'codeowner.showFilesForOwner'
 
-const getOwners = () => {
+const getOwnersOfCurrentFile = () => {
 	const editor = window.activeTextEditor
 
 	if (!editor) {
-		return
+		return []
 	}
 
 	const absolutePath = editor.document.fileName
 	const relativePath = workspace.asRelativePath(absolutePath)
-	const codeowners = new Codeowners(absolutePath)
-	return codeowners.getOwner(relativePath)
+	return codeowners.getFileOwners(relativePath)
 }
 
-const updateStatusBarItem = () => {
-	const owners = getOwners()
+const updateStatusBarItem = async () => {
+	const owners = await getOwnersOfCurrentFile()
 
 	if (!owners) {
 		return statusBarItem.hide()
 	}
 
-	if (owners.length > 2) {
-		statusBarItem.text = `${owners[0]} +${owners.length - 1}`
-	} else if (owners.length === 2) {
-		statusBarItem.text = `${owners[0]} +1`
-	} else if (owners.length === 1) {
-		statusBarItem.text = `${owners[0]}`
-	} else {
-		statusBarItem.text = 'No owner'
-	}
-
+	statusBarItem.text = ownersToText(owners)
 	statusBarItem.tooltip = 'Show owners of this file'
 	statusBarItem.show()
 }
 
-const getFirstWorspacePath = () => workspace.workspaceFolders?.[0].uri.path
+const getFileOwners = async () => {
+	const owners = await getOwnersOfCurrentFile()
+	renderFileOwnersPick(owners)
+}
 
-const getFileOwners = () => {
-	window.showQuickPick(getOwners() ?? []).then((owner) => {
-		if (owner) {
-			getFilesOwnedBy(owner)
-		}
+const renderFileOwnersPick = async (owners: string[]) => {
+	const owner = await window.showQuickPick(owners, {
+		placeHolder: 'Select owner to view their owned files'
 	})
-}
 
-const openFileOrFolder = (selectedItem: string) => {
-	const workspaceUri = workspace.workspaceFolders?.[0].uri
-	if (!workspaceUri) {
-		return
-	}
-
-	const uri = Uri.joinPath(workspaceUri, selectedItem)
-	if (selectedItem.endsWith('/')) {
-		commands.executeCommand('revealInExplorer', uri)
-	} else {
-		commands.executeCommand('vscode.open', uri)
+	if (owner) {
+		getFilesOwnedBy(owner)
 	}
 }
 
-const getFilesOwnedBy = (owner: string) => {
-	const cwd = workspace.workspaceFolders?.[0].uri.path
-	if (!cwd) {
-		return
+const getFilesOwnedBy = async (owner: string) => {
+	const selectedFile = await window.showQuickPick(
+		codeowners.getFilesOwnedBy(owner),
+		{ placeHolder: 'Filter file by name' }
+	)
+
+	if (selectedFile) {
+		openFile(selectedFile)
 	}
-
-	const codeowners = new Codeowners(cwd)
-
-	window
-		.showQuickPick(codeowners.getPathsForOwner(owner) ?? [])
-		.then((selectedItem) => {
-			if (selectedItem) {
-				openFileOrFolder(selectedItem)
-			}
-		})
 }
 
 const handleFilesOwnedBy = () => {
-	return window
-		.showInputBox()
-		.then((owner) => (owner ? getFilesOwnedBy(owner) : undefined))
+	renderFileOwnersPick(codeowners.getAllOwners())
 }
 
-export const activate = (context: ExtensionContext) => {
+export const activate = async (context: ExtensionContext) => {
 	statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right, 100)
 	statusBarItem.command = statusBarCommand
+
+	await codeowners.init()
 
 	const fileOwners = commands.registerCommand(statusBarCommand, getFileOwners)
 
 	const teamFiles = commands.registerCommand(
-		teamFilesCommand,
+		ownedFilesCommand,
 		handleFilesOwnedBy
 	)
 
