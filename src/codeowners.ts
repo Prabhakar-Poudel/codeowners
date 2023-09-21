@@ -13,10 +13,6 @@ export const getAllCodeowners = async () => {
 	}
 
 	const codeownersContent = await readCodeOwners(file)
-	console.log(
-		'codeownersContentcodeownersContentcodeownersContentcodeownersContentcodeownersContentcodeownersContentcodeownersContentcodeownersContentcodeownersContentcodeownersContentcodeownersContent',
-		codeownersContent
-	)
 	return parseCodeowners(codeownersContent)
 }
 
