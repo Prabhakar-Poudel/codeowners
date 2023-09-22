@@ -33,3 +33,14 @@ export const readCodeOwners = async (codeownersPath: string) => {
 	const content = await workspace.fs.readFile(Uri.file(codeownersPath))
 	return content.toString()
 }
+
+export const getAllCodeowners = async () => {
+	const file = await findCodeownersFile()
+
+	if (!file) {
+		return []
+	}
+
+	const codeownersContent = await readCodeOwners(file)
+	return parseCodeowners(codeownersContent)
+}

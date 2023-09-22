@@ -1,20 +1,5 @@
-import {
-	findCodeownersFile,
-	parseCodeowners,
-	readCodeOwners
-} from './fileHelpers'
 import { CodeownerEntry } from './types'
-
-export const getAllCodeowners = async () => {
-	const file = await findCodeownersFile()
-
-	if (!file) {
-		return []
-	}
-
-	const codeownersContent = await readCodeOwners(file)
-	return parseCodeowners(codeownersContent)
-}
+import { getAllCodeowners } from './fileHelpers'
 
 export class Codeowners {
 	private codeownerEntries: CodeownerEntry[] = []
