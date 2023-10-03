@@ -9,9 +9,10 @@ export class Codeowners {
 	}
 
 	public getFilesOwnedBy = (owner: string) =>
-		this.codeownerEntries
-			.filter(({ owners }) => owners.includes(owner))
-			.map(({ pattern }) => pattern)
+		this.getOwnerEntries(owner).map(({ pattern }) => pattern)
+
+	public getOwnerEntries = (owner: string) =>
+		this.codeownerEntries.filter(({ owners }) => owners.includes(owner))
 
 	public getAllOwners = () =>
 		Array.from(
@@ -23,9 +24,9 @@ export class Codeowners {
 			)
 		).sort()
 
+	public getFileOwnerEntries = (filePath: string) =>
+		this.codeownerEntries.find(({ matcher }) => matcher.ignores(filePath))
+
 	public getFileOwners = (filePath: string) =>
-		Array.from(
-			this.codeownerEntries.find(({ matcher }) => matcher.ignores(filePath))
-				?.owners ?? []
-		)
+		this.getFileOwnerEntries(filePath)?.owners ?? []
 }

@@ -28,6 +28,34 @@
       {
         "command": "codeowner.fileOwners",
         "title": "Codeowner: Show owners of current file"
+      },
+      {
+        "command": "codeowner.selectTreeOwner",
+        "title": "Select Owner",
+        "icon": "$(organization-outline)"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "ownerFiles",
+          "name": "Owner files"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "codeowner.selectTreeOwner",
+          "when": "view == ownerFiles",
+          "group": "navigation"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "ownerFiles",
+        "contents": "Please select an owner to view their files.\n[Select Owner](command:codeowner.selectTreeOwner)\n"
       }
     ]
   },
@@ -40,16 +68,11 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.2",
     "@types/node": "20.7.0",
-    "@types/vscode": "^1.82.0",
+    "@types/vscode": "^1.78.0",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
-    "@vscode/test-electron": "^2.3.4",
     "eslint": "^8.50.0",
-    "glob": "^10.3.10",
-    "mocha": "^10.2.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
