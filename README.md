@@ -13,3 +13,7 @@ Working with CODEOWENERS in VSCode
 - List files for owner
 Hint: (cmd/ctrl+shift+p and search for the command)
 ![List files for owner](/src/assets/gifs/list_files.gif "List files for owner")
+
+- Owner file explorer
+Check explorer menu
+![Owner file explorer](/src/assets/gifs/owner_files_explorer.gif "Owner file explorer")

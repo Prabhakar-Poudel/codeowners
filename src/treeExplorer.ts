@@ -88,7 +88,7 @@ export class TreeExplorerProvider implements TreeDataProvider<Entry> {
 					type === FileType.Directory ? `${relativePath}/` : relativePath
 
 				return (
-					this.ownerEntries.some((glob) => glob.startsWith(path)) ||
+					this.ownerEntries.some((glob) => glob.includes(path)) ||
 					this.codeowners.getFileOwners(path).includes(this.team)
 				)
 			})
