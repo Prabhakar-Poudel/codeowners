@@ -21,11 +21,13 @@ const codeownerLineToEntry = (line: string) => {
 	}
 }
 
+const commentRegex = /^#|\[.*\]$/
+
 export const parseCodeowners = (codeownersContent: string): CodeownerEntry[] =>
 	codeownersContent
 		.split('\n')
 		.map((line) => line.trim())
-		.filter((line) => line && !line.startsWith('#'))
+		.filter((line) => line && !commentRegex.test(line))
 		.map(codeownerLineToEntry)
 		.reverse()
 
