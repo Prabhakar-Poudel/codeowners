@@ -8,7 +8,7 @@ const CODEOWNERS_GLOB =
 
 export const findCodeownersFile = async () => {
 	const files = await workspace.findFiles(CODEOWNERS_GLOB)
-	return files[0].path
+	return files[0]?.path
 }
 
 const codeownerLineToEntry = (line: string) => {

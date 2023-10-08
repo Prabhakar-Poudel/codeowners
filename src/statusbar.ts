@@ -23,7 +23,15 @@ export class StatusBar {
 		this.renderFileOwnersPick(owners)
 	}
 
-	renderFileOwnersPick = async (owners: string[]) => {
+	renderFileOwnersPick = async (owners: string[] | null) => {
+		if (!owners) {
+			return this.owner.hide()
+		}
+		if (owners.length === 0) {
+			return window.showInformationMessage(
+				'No owners found. Make sure the CODEOWNERS file is present and stored at the right path.'
+			)
+		}
 		const owner = await window.showQuickPick(owners, {
 			placeHolder: 'Select owner to view their owned files'
 		})
@@ -37,7 +45,7 @@ export class StatusBar {
 		const editor = window.activeTextEditor
 
 		if (!editor) {
-			return []
+			return null
 		}
 
 		const absolutePath = editor.document.fileName

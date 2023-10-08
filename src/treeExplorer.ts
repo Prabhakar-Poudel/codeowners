@@ -55,6 +55,11 @@ export class TreeExplorerProvider implements TreeDataProvider<Entry> {
 	}
 
 	renderFileOwnersPick = async () => {
+		if (!this.owners?.length) {
+			return window.showErrorMessage(
+				'No owners found. Make sure the CODEOWNERS file is present and stored at the right path.'
+			)
+		}
 		const owner = await window.showQuickPick(this.owners, {
 			placeHolder: 'Select owner'
 		})
